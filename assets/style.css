@@ -236,3 +236,23 @@ select, .search { background: var(--surface2); border: 1px solid var(--line); bo
   .cd { font-size: 28px; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+
+/* LIVE в шапке */
+.live-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: .08em; background: var(--out-bg); color: var(--out); border: 1px solid var(--out); border-radius: 999px; padding: 1px 11px; text-decoration: none; min-width: 0; max-width: 100%; }
+.live-pill[hidden] { display: none; }
+.live-pill span { font-family: var(--body); font-weight: 600; letter-spacing: 0; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .2; } }
+
+/* Симулятор и призовые */
+.simbar { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+button.row { width: 100%; background: none; border: 0; border-radius: 0; text-align: left; cursor: pointer; }
+button.row + button.row { border-top: 1px solid var(--line); }
+button.row:hover { background: var(--accent-bg); }
+.m.sim .row.win { background: var(--win-bg); }
+.m.sim .row.win .n { font-weight: 700; }
+.m.sim.locked { opacity: .85; }
+.tl { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.tl .tm { font-weight: 600; }

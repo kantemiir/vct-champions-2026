@@ -10,7 +10,7 @@
     out: "Вылетел из плей-офф", "group-alive": "Играет в группе", "group-out": "Вылетел в группе"
   };
   var STATUS_ORDER = ["champion", "runnerup", "ub", "lb", "group-alive", "out", "group-out"];
-  var VIEWS = { overview: "Обзор", playoffs: "Плей-офф", groups: "Группы", schedule: "Расписание", teams: "Команды", guide: "Гайд" };
+  var VIEWS = { overview: "Обзор", playoffs: "Плей-офф", sim: "Симулятор", groups: "Группы", schedule: "Расписание", teams: "Команды", guide: "Гайд" };
   var TZ_LIST = [
     ["Europe/Kaliningrad", "Калининград"], ["Europe/Moscow", "Москва, Санкт-Петербург"], ["Europe/Samara", "Самара"],
     ["Asia/Yekaterinburg", "Екатеринбург"], ["Asia/Omsk", "Омск"], ["Asia/Novosibirsk", "Новосибирск"],
@@ -24,7 +24,7 @@
     ["Asia/Kolkata", "Индия"], ["UTC", "UTC"]
   ];
 
-  var state = { tz: "auto", fav: "", focus: "", theme: "auto", sched: "all", tf: "all", reg: "all", q: "" };
+  var state = { tz: "auto", fav: "", focus: "", theme: "auto", sched: "all", tf: "all", reg: "all", q: "", picks: {}, lastPick: "" };
 
   // ---------- хранилище (может быть недоступно) ----------
   function load(k, d) { try { var v = localStorage.getItem("vct26." + k); return v === null ? d : v; } catch (e) { return d; } }
@@ -112,7 +112,8 @@
     var t = r.m.round.replace("Нижняя сетка, ", "");
     return t.charAt(0).toUpperCase() + t.slice(1);
   }
-  function bracketHtml(res, key, now) {
+  function bracketHtml(res, key, now, cardFn) {
+    cardFn = cardFn || matchCard;
     var cols = [[], [], [], []];
     res.list.forEach(function (r) {
       var inThis = r.m.bracket === key || (key === "ub" && r.m.bracket === "gf");
@@ -121,7 +122,7 @@
     });
     return '<div class="bracket">' + cols.map(function (c) {
       if (!c.length) return "<div></div>";
-      return '<div class="col"><div class="col-h">' + esc(colTitle(c[0])) + "</div>" + c.map(function (r) { return matchCard(r, now); }).join("") + "</div>";
+      return '<div class="col"><div class="col-h">' + esc(colTitle(c[0])) + "</div>" + c.map(function (r) { return cardFn(r, now); }).join("") + "</div>";
     }).join("") + "</div>";
   }
 
@@ -227,7 +228,110 @@
       '<div class="sec-head"><div><h2 id="h-playoffs">Плей-офф</h2><p class="lead">Восемь команд, double elimination. Все серии Bo3, финал нижней сетки и гранд-финал Bo5. Первое поражение отправляет команду в нижнюю сетку, второе вылет.</p></div>' +
       '<div class="legend"><span><i style="background:var(--win)"></i>победитель серии</span><span><i style="background:var(--live)"></i>матч мог начаться</span>' + hint + "</div></div>" +
       '<div><div class="lane">Верхняя сетка и гранд-финал</div><div class="scroll">' + bracketHtml(res, "ub", now) + "</div></div>" +
-      '<div><div class="lane">Нижняя сетка</div><div class="scroll">' + bracketHtml(res, "lb", now) + "</div></div>";
+      '<div><div class="lane">Нижняя сетка</div><div class="scroll">' + bracketHtml(res, "lb", now) + "</div></div>" +
+      prizePanel(D, res, "Призовые по местам", "Приз получает каждая команда на этом месте. Места в плей-офф определяются выбыванием из сетки. Вылетевшие в группах делят места 9–16 ($30 000 или $20 000 в зависимости от места), точное место внутри этого диапазона мы не определяем. Источники: esports.net, dotesports.com.");
+  }
+
+  // ---------- Призовые ----------
+  function money(n) { return "$" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  function moneyRange(a, b) { return a === b ? money(a) : money(a) + "–" + money(b); }
+  function prizeRows() {
+    var rows = [], lo = null, hi = null;
+    (D.event.prizes || []).forEach(function (t) {
+      if (t.from > 8) { lo = lo === null ? t.from : Math.min(lo, t.from); hi = hi === null ? t.to : Math.max(hi, t.to); }
+      else rows.push({ from: t.from, to: t.to });
+    });
+    if (lo !== null) rows.push({ from: lo, to: hi });
+    return rows;
+  }
+  function prizePanel(DD, res, title, note) {
+    var pl = C.placements(DD, res);
+    var body = prizeRows().map(function (r) {
+      var pz = C.prize(D, r.from, r.to);
+      var codes = Object.keys(pl).filter(function (c) { return pl[c][0] >= r.from && pl[c][1] <= r.to; })
+        .sort(function (a, b) { return nm(a).localeCompare(nm(b)); });
+      var left = (r.to - r.from + 1) - codes.length;
+      var teams = codes.map(function (c) { return teamBtn(c, false); }).join("") + (left > 0 ? '<span class="muted">ещё ' + left + "</span>" : "");
+      return "<tr><td>" + (r.from === r.to ? r.from : r.from + "–" + r.to) + '</td><td class="num">' + (pz ? esc(moneyRange(pz.min, pz.max)) : "") +
+        '</td><td><div class="tl">' + teams + "</div></td></tr>";
+    }).join("");
+    return '<div class="panel" id="prizes"><div class="panel-h"><h3>' + esc(title) + '</h3><span class="muted">фонд ' + esc(D.event.prize) + "</span></div>" +
+      '<div class="twrap"><table class="tbl"><thead><tr><th>Место</th><th>Приз</th><th>Команды</th></tr></thead><tbody>' + body + "</tbody></table></div>" +
+      (note ? '<div class="panel-b muted" style="font-size:12.5px">' + esc(note) + "</div>" : "") + "</div>";
+  }
+
+  // ---------- Симулятор ----------
+  function simCard(r, locked) {
+    var m = r.m, id = m.id;
+    var canPick = !locked[id] && r.a.code && r.b.code;
+    var decided = !!r.winner;
+    function side(s, which) {
+      var win = decided && r.winner === s.code, lose = decided && s.code && r.winner !== s.code;
+      var c = "row" + (win ? " win" : "") + (lose ? " lose" : "") + (s.code ? "" : " tbd");
+      var sc = locked[id] && isNum(m.sa) && isNum(m.sb) ? (which === "a" ? m.sa : m.sb) : "";
+      var inner = '<div class="n"><i class="dot"></i><span class="tn' + (s.code && s.code === state.fav ? " fav-mark" : "") + '">' +
+        esc(s.code ? nm(s.code) : s.label) + '</span></div><div class="s">' + sc + "</div>";
+      if (canPick) {
+        return '<button type="button" class="' + c + ' pk" data-pick="' + esc(id) + "|" + esc(s.code) + '" aria-pressed="' + win +
+          '" title="Победит ' + esc(nm(s.code)) + '">' + inner + "</button>";
+      }
+      return '<div class="' + c + '">' + inner + "</div>";
+    }
+    var tag = locked[id] ? "сыгран" : decided ? "прогноз" : "";
+    return '<div class="m sim' + (locked[id] ? " locked" : "") + (m.bracket === "gf" ? " gf" : "") + '" id="s-' + esc(id) + '"><div class="m-top"><span>' +
+      esc(when(m)) + "</span><span>" + (tag ? chip(locked[id] ? "" : "next", tag) + " " : "") + "Bo" + m.bo + "</span></div>" +
+      side(r.a, "a") + side(r.b, "b") + "</div>";
+  }
+  function savePicks() { try { save("picks", JSON.stringify(state.picks)); } catch (e) { /* без сохранения */ } }
+  function randomFill() {
+    var real = C.resolveAll(D), picks = {}, k;
+    for (k in state.picks) picks[k] = state.picks[k];
+    for (var g = 0; g < 30; g++) {
+      var sim = C.simulate(D, picks), moved = false;
+      for (var i = 0; i < sim.res.list.length; i++) {
+        var r = sim.res.list[i];
+        if (!real.byId[r.m.id].winner && !r.winner && r.a.code && r.b.code) {
+          picks[r.m.id] = Math.random() < 0.5 ? r.a.code : r.b.code; moved = true; break;
+        }
+      }
+      if (!moved) break;
+    }
+    state.picks = C.simulate(D, picks).picks;
+    savePicks();
+  }
+  function renderSim(real, now) {
+    var sim = C.simulate(D, state.picks);
+    state.picks = sim.picks;
+    var locked = {};
+    real.list.forEach(function (r) { if (r.winner) locked[r.m.id] = true; });
+    var cardFn = function (r) { return simCard(r, locked); };
+    var ch = sim.res.byId.GF && sim.res.byId.GF.winner;
+    var pz = ch ? C.prize(D, 1, 1) : null;
+    var hero = '<div class="hero"><div class="hero-k">Ваш прогноз</div>' + (ch
+      ? '<div class="hero-team">' + esc(nm(ch)) + '</div><div class="muted">Чемпион в вашем прогнозе' + (pz ? ", приз " + esc(money(pz.min)) : "") + "</div>"
+      : '<div class="hero-team">Чемпион пока не выбран</div><div class="muted">Выберите победителя в каждой серии, и сетка достроится до гранд-финала.</div>') + "</div>";
+    var keep = Array.prototype.map.call(document.querySelectorAll("#view-sim .scroll"), function (x) { return x.scrollLeft; });
+    $("view-sim").innerHTML =
+      '<div class="sec-head"><div><h2 id="h-sim">Симулятор сетки</h2><p class="lead">Нажимайте на команду в ещё не сыгранной серии, чтобы выбрать победителя. Победители и проигравшие сами перейдут дальше по верхней и нижней сетке. Повторный клик отменяет выбор, сыгранные матчи закреплены. Ваши выборы хранятся только в этом браузере.</p></div>' +
+      '<div class="simbar"><button type="button" class="btn" data-rand="1">Случайно достроить</button><button type="button" class="btn" data-reset="1">Сбросить</button></div></div>' +
+      hero +
+      '<div><div class="lane">Верхняя сетка и гранд-финал</div><div class="scroll">' + bracketHtml(sim.res, "ub", now, cardFn) + "</div></div>" +
+      '<div><div class="lane">Нижняя сетка</div><div class="scroll">' + bracketHtml(sim.res, "lb", now, cardFn) + "</div></div>" +
+      '<p class="muted" style="margin:0;font-size:12.5px">Пары второго раунда нижней сетки пока не подтверждены организаторами. Пока их нет, симулятор использует стандартную схему, при которой победитель раунда 1 играет с проигравшим полуфинала из другой половины сетки. Когда реальные пары появятся, они заменят предположение.</p>' +
+      prizePanel(sim.D, sim.res, "Призовые в вашем прогнозе", "");
+    var sc = document.querySelectorAll("#view-sim .scroll");
+    for (var i = 0; i < sc.length && i < keep.length; i++) sc[i].scrollLeft = keep[i];
+  }
+
+  // ---------- Метка LIVE в шапке ----------
+  function renderLive(res, now) {
+    var el = $("live");
+    var live = res.list.filter(function (r) { return C.status(r, now) === "live"; });
+    if (!live.length) { el.hidden = true; el.innerHTML = ""; return; }
+    var r = live[0];
+    el.hidden = false;
+    el.innerHTML = '<i class="pulse"></i>LIVE <span>' + esc(nm(r.a.code)) + " – " + esc(nm(r.b.code)) + (live.length > 1 ? " и ещё " + (live.length - 1) : "") + "</span>";
+    el.title = "Матч идёт по расписанию. Результат появится на сайте после обновления данных (раз в час).";
   }
 
   // ---------- Группы ----------
@@ -379,6 +483,8 @@
     var now = Date.now(), res = C.resolveAll(D);
     renderOverview(res, now);
     renderPlayoffs(res, now);
+    renderSim(res, now);
+    renderLive(res, now);
     renderGroups();
     renderSchedule(res, now);
     renderTeamsList();
@@ -445,9 +551,19 @@
 
   // ---------- Клики ----------
   document.addEventListener("click", function (e) {
-    var t = e.target.closest ? e.target.closest("[data-team],[data-star],[data-sched],[data-tf],[data-clear]") : null;
+    var t = e.target.closest ? e.target.closest("[data-team],[data-star],[data-sched],[data-tf],[data-clear],[data-pick],[data-rand],[data-reset]") : null;
     if (!t) return;
-    if (t.hasAttribute("data-team")) {
+    if (t.hasAttribute("data-pick")) {
+      var pk = t.getAttribute("data-pick").split("|");
+      if (state.picks[pk[0]] === pk[1]) delete state.picks[pk[0]]; else state.picks[pk[0]] = pk[1];
+      savePicks(); renderAll();
+      var again = document.querySelector('[data-pick="' + pk.join("|") + '"]');
+      if (again && again.focus) again.focus({ preventScroll: true });
+    } else if (t.hasAttribute("data-rand")) {
+      randomFill(); renderAll();
+    } else if (t.hasAttribute("data-reset")) {
+      state.picks = {}; savePicks(); renderAll();
+    } else if (t.hasAttribute("data-team")) {
       var c = t.getAttribute("data-team");
       state.focus = state.focus === c && !t.hasAttribute("data-goto") ? "" : c;
       renderAll();
@@ -474,6 +590,10 @@
   state.fav = load("fav", "");
   if (state.fav && !D.teams[state.fav]) state.fav = "";
   state.theme = load("theme", "auto");
+  try {
+    var sp = JSON.parse(load("picks", "{}"));
+    if (sp && typeof sp === "object" && !Array.isArray(sp)) state.picks = sp;
+  } catch (e) { state.picks = {}; }
 
   initControls();
   applyTheme();

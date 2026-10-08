@@ -7,6 +7,8 @@
   "W:UB-QF1" значит «победитель матча UB-QF1», "L:UB-QF1" значит «проигравший».
   Когда матч сыгран, ссылка автоматически превращается в название команды.
   sa это счёт по картам для стороны a, sb для стороны b.
+  simA и simB (только у LB-R2) это предполагаемые стороны для симулятора, пока в a и b стоят
+  текстовые заглушки. Когда в a и b появляются коды команд, simA и simB игнорируются.
 */
 window.CHAMPIONS = {
   updated: "2026-10-08T10:55:00Z",
@@ -20,6 +22,18 @@ window.CHAMPIONS = {
     first: "$1 000 000",
     second: "$400 000",
     third: "$250 000",
+    // Призовые по местам (from..to включительно, usd на каждую команду). Сумма $2 250 000.
+    // Источники: esports.net, dotesports.com (совпадают).
+    prizes: [
+      { from: 1,  to: 1,  usd: 1000000 },
+      { from: 2,  to: 2,  usd: 400000 },
+      { from: 3,  to: 3,  usd: 250000 },
+      { from: 4,  to: 4,  usd: 130000 },
+      { from: 5,  to: 6,  usd: 85000 },
+      { from: 7,  to: 8,  usd: 50000 },
+      { from: 9,  to: 12, usd: 30000 },
+      { from: 13, to: 16, usd: 20000 }
+    ],
     venues: "Jing'an Sports Center (группы и ранний плей-офф), Mercedes-Benz Arena (топ-4 и гранд-финал)",
     maps: ["Abyss", "Ascent", "Haven", "Lotus", "Split", "Summit", "Sunset"]
   },
@@ -91,8 +105,8 @@ window.CHAMPIONS = {
 
     { id: "LB-R1-1", short: "Р1-1 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 1, bo: 3, startUtc: "2026-10-09T09:00:00Z", a: "L:UB-QF1", b: "L:UB-QF2" },
     { id: "LB-R1-2", short: "Р1-2 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 2, bo: 3, startUtc: "2026-10-09T12:00:00Z", a: "L:UB-QF3", b: "L:UB-QF4" },
-    { id: "LB-R2-1", short: "Р2-1 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 1, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала" },
-    { id: "LB-R2-2", short: "Р2-2 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 2, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала" },
+    { id: "LB-R2-1", short: "Р2-1 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 1, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала", simA: "W:LB-R1-1", simB: "L:UB-SF2" },
+    { id: "LB-R2-2", short: "Р2-2 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 2, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала", simA: "W:LB-R1-2", simB: "L:UB-SF1" },
     { id: "LB-SF", short: "полуфинала нижней",   bracket: "lb", col: 2, round: "Полуфинал нижней сетки", n: 0, bo: 3, dateNote: "16–17 окт", a: "W:LB-R2-1", b: "W:LB-R2-2" },
     { id: "LB-F", short: "финала нижней",    bracket: "lb", col: 3, round: "Финал нижней сетки", n: 0, bo: 5, dateNote: "финальные выходные", a: "W:LB-SF", b: "L:UB-F" },
 

@@ -159,6 +159,62 @@
     return Core.playoffState(D, res)[code].where;
   };
 
+  // ---------- Места, призовые и симулятор ----------
+
+  // Места команд: { код: [от, до] }. Только те, чьё место уже определено.
+  // Вылет в группе даёт диапазон 9–16, плей-офф даёт точные места по сетке.
+  Core.placements = function (D, res) {
+    var out = {};
+    res.list.forEach(function (r) {
+      if (!r.winner) return;
+      var m = r.m;
+      if (m.bracket === "gf") { out[r.winner] = [1, 1]; out[r.loser] = [2, 2]; }
+      else if (m.bracket === "lb") out[r.loser] = m.col >= 3 ? [3, 3] : m.col === 2 ? [4, 4] : m.col === 1 ? [5, 6] : [7, 8];
+    });
+    D.groups.forEach(function (g) {
+      Core.groupTable(D, g).forEach(function (row) { if (row.status === "out" && !out[row.code]) out[row.code] = [9, 16]; });
+    });
+    return out;
+  };
+
+  // Приз за диапазон мест: { min, max } в долларах или null.
+  Core.prize = function (D, from, to) {
+    var lo = null, hi = null;
+    (D.event.prizes || []).forEach(function (t) {
+      if (t.to < from || t.from > to) return;
+      lo = lo === null ? t.usd : Math.min(lo, t.usd);
+      hi = hi === null ? t.usd : Math.max(hi, t.usd);
+    });
+    return lo === null ? null : { min: lo, max: hi };
+  };
+
+  // Симулятор: picks это { id матча: код победителя }. Сыгранные матчи не трогаем,
+  // выбор, который перестал быть возможным (сменились соперники), отбрасываем.
+  // Возвращает { D, res, picks } для D с достроенной сеткой.
+  Core.simulate = function (D, picks) {
+    var copies = D.playoffs.matches.map(function (m) {
+      var c = {};
+      for (var k in m) c[k] = m[k];
+      [["a", "simA"], ["b", "simB"]].forEach(function (p) {
+        var v = c[p[0]];
+        if (c[p[1]] && typeof v === "string" && !D.teams[v] && !/^[WL]:/.test(v)) c[p[0]] = c[p[1]];
+      });
+      return c;
+    });
+    var SD = { event: D.event, teams: D.teams, groups: D.groups, playoffs: { matches: copies } };
+    var applied = {}, changed = true, guard = 0, res;
+    while (changed && guard++ < 30) {
+      changed = false;
+      res = Core.resolveAll(SD);
+      copies.forEach(function (c) {
+        var r = res.byId[c.id], p = picks && picks[c.id];
+        if (!p || r.winner || applied[c.id]) return;
+        if (p === r.a.code || p === r.b.code) { c.winner = p; applied[c.id] = p; changed = true; }
+      });
+    }
+    return { D: SD, res: Core.resolveAll(SD), picks: applied };
+  };
+
   if (typeof module !== "undefined" && module.exports) module.exports = Core;
   else root.Core = Core;
 })(typeof window !== "undefined" ? window : this);
