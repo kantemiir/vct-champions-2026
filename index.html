@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VCT Champions 2026 · Шанхай</title>
+<meta name="description" content="Сетка плей-офф, групповой этап, расписание в вашем часовом поясе и гайд по VALORANT Champions 2026 в Шанхае.">
+<meta property="og:title" content="VCT Champions 2026 · Шанхай">
+<meta property="og:description" content="Сетка, группы и расписание в вашем часовом поясе. Для тех, кто привык к HLTV и хочет смотреть Valorant.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b50e6'/%3E%3Cpath d='M8 9h6v6h4V9h6v14h-6v-6h-4v6H8z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#app">К содержимому</a>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#overview" aria-label="VCT Champions 2026, на главную">
+      <span class="logo" aria-hidden="true">VCT</span>
+      <span class="brand-t"><b>Champions 2026</b><small>Шанхай</small></span>
+    </a>
+    <nav class="tabs" id="tabs" aria-label="Разделы сайта">
+      <a href="#overview" data-view="overview">Обзор</a>
+      <a href="#playoffs" data-view="playoffs">Плей-офф</a>
+      <a href="#groups" data-view="groups">Группы</a>
+      <a href="#schedule" data-view="schedule">Расписание</a>
+      <a href="#teams" data-view="teams">Команды</a>
+      <a href="#guide" data-view="guide">Гайд</a>
+    </nav>
+    <div class="ctl">
+      <label class="sel"><span>Часовой пояс</span>
+        <select id="tz" aria-label="Часовой пояс"></select>
+      </label>
+      <label class="sel"><span>Моя команда</span>
+        <select id="fav" aria-label="Моя команда"></select>
+      </label>
+      <button class="theme" id="theme" type="button" aria-label="Переключить тему"></button>
+    </div>
+  </div>
+</header>
+
+<main id="app" class="wrap">
+  <section id="view-overview" class="view" aria-labelledby="h-overview"></section>
+  <section id="view-playoffs" class="view" aria-labelledby="h-playoffs" hidden></section>
+  <section id="view-groups" class="view" aria-labelledby="h-groups" hidden></section>
+  <section id="view-schedule" class="view" aria-labelledby="h-schedule" hidden></section>
+  <section id="view-teams" class="view" aria-labelledby="h-teams" hidden></section>
+  <section id="view-guide" class="view" aria-labelledby="h-guide" hidden></section>
+</main>
+
+<footer class="foot wrap">
+  <div id="upd"></div>
+  <div>Данные собираются из открытых источников и могут содержать неточности. Официальные результаты: <a href="https://valorantesports.com" target="_blank" rel="noopener">valorantesports.com</a>, <a href="https://www.vlr.gg/event/2766/valorant-champions-2026" target="_blank" rel="noopener">vlr.gg</a>, <a href="https://liquipedia.net/valorant/VCT/2026/Champions" target="_blank" rel="noopener">Liquipedia</a>.</div>
+  <div>Неофициальный фанатский сайт, не связан с Riot Games.</div>
+</footer>
+
+<noscript><p class="wrap">Для работы сайта нужен JavaScript.</p></noscript>
+<script src="data.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
