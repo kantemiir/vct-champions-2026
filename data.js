@@ -11,7 +11,7 @@
   текстовые заглушки. Когда в a и b появляются коды команд, simA и simB игнорируются.
 */
 window.CHAMPIONS = {
-  updated: "2026-10-08T10:55:00Z",
+  updated: "2026-10-08T11:17:00Z",
 
   event: {
     name: "VALORANT Champions 2026",
@@ -96,7 +96,7 @@ window.CHAMPIONS = {
   playoffs: { matches: [
     { id: "UB-QF1", short: "ЧФ 1", bracket: "ub", col: 0, round: "Четвертьфинал", n: 1, bo: 3, startUtc: "2026-10-07T09:00:00Z", a: "NRG", b: "T1", sa: 2, sb: 0 },
     { id: "UB-QF2", short: "ЧФ 2", bracket: "ub", col: 0, round: "Четвертьфинал", n: 2, bo: 3, startUtc: "2026-10-07T12:00:00Z", a: "PRX", b: "LOUD", sa: 0, sb: 2 },
-    { id: "UB-QF3", short: "ЧФ 3", bracket: "ub", col: 0, round: "Четвертьфинал", n: 3, bo: 3, startUtc: "2026-10-08T09:00:00Z", a: "100T", b: "G2" },
+    { id: "UB-QF3", short: "ЧФ 3", bracket: "ub", col: 0, round: "Четвертьфинал", n: 3, bo: 3, startUtc: "2026-10-08T09:00:00Z", a: "100T", b: "G2", sa: 0, sb: 2 },
     { id: "UB-QF4", short: "ЧФ 4", bracket: "ub", col: 0, round: "Четвертьфинал", n: 4, bo: 3, startUtc: "2026-10-08T12:00:00Z", a: "VIT", b: "NS" },
 
     { id: "UB-SF1", short: "ПФ 1", bracket: "ub", col: 1, round: "Полуфинал", n: 1, bo: 3, startUtc: "2026-10-10T09:00:00Z", a: "W:UB-QF1", b: "W:UB-QF2" },
@@ -105,8 +105,8 @@ window.CHAMPIONS = {
 
     { id: "LB-R1-1", short: "Р1-1 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 1, bo: 3, startUtc: "2026-10-09T09:00:00Z", a: "L:UB-QF1", b: "L:UB-QF2" },
     { id: "LB-R1-2", short: "Р1-2 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 2, bo: 3, startUtc: "2026-10-09T12:00:00Z", a: "L:UB-QF3", b: "L:UB-QF4" },
-    { id: "LB-R2-1", short: "Р2-1 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 1, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала", simA: "W:LB-R1-1", simB: "L:UB-SF2" },
-    { id: "LB-R2-2", short: "Р2-2 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 2, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала", simA: "W:LB-R1-2", simB: "L:UB-SF1" },
+    { id: "LB-R2-1", short: "Р2-1 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 1, bo: 3, startUtc: "2026-10-11T09:00:00Z", a: "Победитель раунда 1", b: "Проигравший полуфинала", simA: "W:LB-R1-1", simB: "L:UB-SF2" },
+    { id: "LB-R2-2", short: "Р2-2 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 2, bo: 3, startUtc: "2026-10-11T12:00:00Z", a: "Победитель раунда 1", b: "Проигравший полуфинала", simA: "W:LB-R1-2", simB: "L:UB-SF1" },
     { id: "LB-SF", short: "полуфинала нижней",   bracket: "lb", col: 2, round: "Полуфинал нижней сетки", n: 0, bo: 3, dateNote: "16–17 окт", a: "W:LB-R2-1", b: "W:LB-R2-2" },
     { id: "LB-F", short: "финала нижней",    bracket: "lb", col: 3, round: "Финал нижней сетки", n: 0, bo: 5, dateNote: "финальные выходные", a: "W:LB-SF", b: "L:UB-F" },
 
