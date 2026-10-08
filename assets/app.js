@@ -145,7 +145,7 @@
       ? '<span class="cd now">Начался в ' + esc(hhmm(nx.m.startUtc)) + '</span><span class="muted">Результат появится после обновления данных</span>'
       : '<span class="cd" data-cd="' + esc(nx.m.startUtc) + '"></span><span class="muted">' + esc(when(nx.m)) + "</span>";
     return '<div class="hero"><div class="hero-k">' + (live ? "Идёт сейчас, возможно · " : "Ближайший матч · ") + esc(roundLabel(nx.m)) + " · Bo" + nx.m.bo +
-      '</div><div class="hero-vs"><div class="hero-team">' + esc(nm(nx.a.code)) + '</div><div class="v">против</div><div class="hero-team r">' + esc(nm(nx.b.code)) +
+      '</div><div class="hero-vs"><div class="hero-team">' + esc(nm(nx.a.code)) + '</div><div class="v">против</div><div class="hero-team rt">' + esc(nm(nx.b.code)) +
       '</div></div><div class="hero-meta">' + meta + "</div></div>";
   }
 
