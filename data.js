@@ -11,7 +11,7 @@
   текстовые заглушки. Когда в a и b появляются коды команд, simA и simB игнорируются.
 */
 window.CHAMPIONS = {
-  updated: "2026-10-08T11:17:00Z",
+  updated: "2026-10-08T11:25:00Z",
 
   event: {
     name: "VALORANT Champions 2026",
@@ -97,7 +97,7 @@ window.CHAMPIONS = {
     { id: "UB-QF1", short: "ЧФ 1", bracket: "ub", col: 0, round: "Четвертьфинал", n: 1, bo: 3, startUtc: "2026-10-07T09:00:00Z", a: "NRG", b: "T1", sa: 2, sb: 0 },
     { id: "UB-QF2", short: "ЧФ 2", bracket: "ub", col: 0, round: "Четвертьфинал", n: 2, bo: 3, startUtc: "2026-10-07T12:00:00Z", a: "PRX", b: "LOUD", sa: 0, sb: 2 },
     { id: "UB-QF3", short: "ЧФ 3", bracket: "ub", col: 0, round: "Четвертьфинал", n: 3, bo: 3, startUtc: "2026-10-08T09:00:00Z", a: "100T", b: "G2", sa: 0, sb: 2 },
-    { id: "UB-QF4", short: "ЧФ 4", bracket: "ub", col: 0, round: "Четвертьфинал", n: 4, bo: 3, startUtc: "2026-10-08T12:00:00Z", a: "VIT", b: "NS" },
+    { id: "UB-QF4", short: "ЧФ 4", bracket: "ub", col: 0, round: "Четвертьфинал", n: 4, bo: 3, startUtc: "2026-10-08T11:20:00Z", a: "VIT", b: "NS" },
 
     { id: "UB-SF1", short: "ПФ 1", bracket: "ub", col: 1, round: "Полуфинал", n: 1, bo: 3, startUtc: "2026-10-10T09:00:00Z", a: "W:UB-QF1", b: "W:UB-QF2" },
     { id: "UB-SF2", short: "ПФ 2", bracket: "ub", col: 1, round: "Полуфинал", n: 2, bo: 3, startUtc: "2026-10-10T12:00:00Z", a: "W:UB-QF3", b: "W:UB-QF4" },
