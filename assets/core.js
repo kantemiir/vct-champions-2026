@@ -29,7 +29,7 @@
         if (r && r.winner && r.a.code && r.b.code) {
           return { code: mt[1] === "W" ? r.winner : r.loser };
         }
-        return { label: (mt[1] === "W" ? "Победитель " : "Проигравший ") + shortName(mt[2]) };
+        return { label: (mt[1] === "W" ? "Победитель " : "Проигравший ") + shortName(mt[2]), kind: mt[1], ref: mt[2] };
       }
       return { label: ref };
     }

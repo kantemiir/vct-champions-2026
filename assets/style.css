@@ -54,13 +54,18 @@ button, select, input { font: inherit; color: inherit; }
 
 /* Шапка */
 .bar { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 2px solid var(--brand); }
-.bar-in { max-width: 1120px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap; }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.bar-in { max-width: 1120px; margin: 0 auto; padding: 8px 16px; display: grid; gap: 6px; }
+.bar-in > * { min-width: 0; }
+.bar-top { display: flex; align-items: center; gap: 8px 16px; min-width: 0; }
+.bar-bot { display: flex; align-items: flex-end; gap: 8px 20px; flex-wrap: wrap; }
+.lang { margin-left: auto; flex: none; }
+.lang button { padding: 3px 11px; font-family: var(--display); font-weight: 700; letter-spacing: .06em; font-size: 15px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-width: 0; }
 .logo { font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: .06em; background: var(--brand); color: #0f1923; padding: 3px 9px; border-radius: 2px; }
 .brand-t { display: grid; line-height: 1.05; }
 .brand-t b { font-family: var(--display); font-size: 20px; text-transform: uppercase; letter-spacing: .02em; }
 .brand-t small { color: var(--muted); font-size: 12px; }
-.tabs { display: flex; gap: 2px; order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding-inline: 4px; }
+.tabs { display: flex; gap: 2px; flex: 1 1 100%; min-width: 0; overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding-inline: 4px; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs a { font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 6px 12px; border-radius: 3px; white-space: nowrap; }
 .tabs a:hover { color: var(--ink); background: var(--surface2); }
@@ -71,13 +76,13 @@ button, select, input { font: inherit; color: inherit; }
 select, .search { background: var(--surface2); border: 1px solid var(--line); border-radius: 3px; padding: 5px 8px; max-width: 200px; }
 .theme { background: var(--surface2); border: 1px solid var(--line); border-radius: 3px; padding: 6px 10px; cursor: pointer; align-self: end; font-size: 13px; }
 .theme:hover { border-color: var(--accent); }
-@media (min-width: 900px) {
-  .tabs { order: 0; width: auto; margin: 0; padding: 0; }
-  .ctl { margin-left: auto; }
+@media (min-width: 1000px) {
+  .tabs { flex: 0 1 auto; margin: 0; padding: 0; }
 }
 @media (max-width: 520px) {
   .sel select { max-width: 150px; }
-  .brand-t small { display: none; }
+  .brand-t { display: none; }
+  .ctl { margin-left: 0; width: 100%; }
 }
 
 /* Общие блоки */
@@ -238,7 +243,7 @@ select, .search { background: var(--surface2); border: 1px solid var(--line); bo
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 
 /* LIVE в шапке */
-.live-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: .08em; background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 1px 11px; text-decoration: none; min-width: 0; max-width: 100%; }
+.live-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: .08em; background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 1px 11px; text-decoration: none; min-width: 0; max-width: 100%; overflow: hidden; flex: 0 1 auto; }
 .live-pill[hidden] { display: none; }
 .live-pill span { font-family: var(--body); font-weight: 600; letter-spacing: 0; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pulse { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; animation: pulse 1.4s ease-in-out infinite; }
