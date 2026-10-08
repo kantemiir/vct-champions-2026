@@ -9,7 +9,7 @@
   sa это счёт по картам для стороны a, sb для стороны b.
 */
 window.CHAMPIONS = {
-  updated: "2026-10-08T10:00:00Z",
+  updated: "2026-10-08T10:55:00Z",
 
   event: {
     name: "VALORANT Champions 2026",
@@ -85,12 +85,12 @@ window.CHAMPIONS = {
     { id: "UB-QF3", short: "ЧФ 3", bracket: "ub", col: 0, round: "Четвертьфинал", n: 3, bo: 3, startUtc: "2026-10-08T09:00:00Z", a: "100T", b: "G2" },
     { id: "UB-QF4", short: "ЧФ 4", bracket: "ub", col: 0, round: "Четвертьфинал", n: 4, bo: 3, startUtc: "2026-10-08T12:00:00Z", a: "VIT", b: "NS" },
 
-    { id: "UB-SF1", short: "ПФ 1", bracket: "ub", col: 1, round: "Полуфинал", n: 1, bo: 3, dateNote: "дата уточняется", a: "W:UB-QF1", b: "W:UB-QF2" },
-    { id: "UB-SF2", short: "ПФ 2", bracket: "ub", col: 1, round: "Полуфинал", n: 2, bo: 3, dateNote: "дата уточняется", a: "W:UB-QF3", b: "W:UB-QF4" },
+    { id: "UB-SF1", short: "ПФ 1", bracket: "ub", col: 1, round: "Полуфинал", n: 1, bo: 3, startUtc: "2026-10-10T09:00:00Z", a: "W:UB-QF1", b: "W:UB-QF2" },
+    { id: "UB-SF2", short: "ПФ 2", bracket: "ub", col: 1, round: "Полуфинал", n: 2, bo: 3, startUtc: "2026-10-10T12:00:00Z", a: "W:UB-QF3", b: "W:UB-QF4" },
     { id: "UB-F", short: "финала верхней",   bracket: "ub", col: 2, round: "Финал верхней сетки", n: 0, bo: 3, dateNote: "16–17 окт", a: "W:UB-SF1", b: "W:UB-SF2" },
 
     { id: "LB-R1-1", short: "Р1-1 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 1, bo: 3, startUtc: "2026-10-09T09:00:00Z", a: "L:UB-QF1", b: "L:UB-QF2" },
-    { id: "LB-R1-2", short: "Р1-2 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 2, bo: 3, dateNote: "дата уточняется", a: "L:UB-QF3", b: "L:UB-QF4" },
+    { id: "LB-R1-2", short: "Р1-2 нижней", bracket: "lb", col: 0, round: "Нижняя сетка, раунд 1", n: 2, bo: 3, startUtc: "2026-10-09T12:00:00Z", a: "L:UB-QF3", b: "L:UB-QF4" },
     { id: "LB-R2-1", short: "Р2-1 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 1, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала" },
     { id: "LB-R2-2", short: "Р2-2 нижней", bracket: "lb", col: 1, round: "Нижняя сетка, раунд 2", n: 2, bo: 3, dateNote: "дата уточняется", a: "Победитель раунда 1", b: "Проигравший полуфинала" },
     { id: "LB-SF", short: "полуфинала нижней",   bracket: "lb", col: 2, round: "Полуфинал нижней сетки", n: 0, bo: 3, dateNote: "16–17 окт", a: "W:LB-R2-1", b: "W:LB-R2-2" },
